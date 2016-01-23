@@ -1,16 +1,19 @@
 module ComposeDiff
 
+using Patchwork
 using Measures
 using Compose
-using Patchwork
 using Reactive
 using Compat
+using Colors
 
 export Patchable
 
 import Compose:
     Backend,
     draw,
+    isrepeatable,
+    isscalar,
     svg_fmt_color,
     default_stroke_color,
     default_line_width,
@@ -20,6 +23,9 @@ import Compose:
     default_graphic_height,
     default_graphic_format,
     default_jsmode,
+    push_property_frame,
+    pop_property_frame,
+    print_svg_path,
     svg_fmt_float,
     svg_print_path_op,
     svg_fmt_linecap,
@@ -522,12 +528,9 @@ end
 # writemime for signals
 
 import Base: writemime
-import Reactive: Signal, map
 
-if isdefined(Main, :IJulia)
-    import IJulia: metadata
-    metadata{T <: ComposeNode}(::Signal{T}) = Dict()
-end
+import IJulia
+IJulia.metadata{T <: ComposeNode}(::Signal{T}) = Dict()
 
 function writemime{T <: ComposeNode}(io::IO, m::MIME"text/html", ctx::Signal{T})
     writemime(io, m, map(c -> draw(
