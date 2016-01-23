@@ -1,4 +1,6 @@
 julia 0.4
+Colors
+IJulia
 Compose 0.4.2
 Reactive 0.3
 Patchwork 0.1.9
