@@ -529,9 +529,6 @@ end
 
 import Base: writemime
 
-import IJulia
-IJulia.metadata{T <: ComposeNode}(::Signal{T}) = Dict()
-
 function writemime{T <: ComposeNode}(io::IO, m::MIME"text/html", ctx::Signal{T})
     writemime(io, m, map(c -> draw(
         Patchable(
@@ -540,4 +537,15 @@ function writemime{T <: ComposeNode}(io::IO, m::MIME"text/html", ctx::Signal{T})
         ), c), ctx))
 end
 
-end # module
+using Requires
+
+@require IJulia begin
+    IJulia.metadata{T <: ComposeNode}(::Signal{T}) = Dict()
+end
+
+function __init__()
+    for f in Requires.__inits__
+        f()
+    end
+end
+end
