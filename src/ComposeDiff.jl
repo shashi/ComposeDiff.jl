@@ -216,7 +216,7 @@ function draw(img::Patchable, form::Form)
         end
         acc[i] = elem
     end
-    img.parent_stack[end] <<= acc
+    img.parent_stack[end] <<= filter(x -> x != nothing, acc)
     acc
 end
 
