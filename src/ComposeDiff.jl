@@ -527,10 +527,8 @@ end
 
 # writemime for signals
 
-import Base: writemime
-
-function writemime{T <: ComposeNode}(io::IO, m::MIME"text/html", ctx::Signal{T})
-    writemime(io, m, map(c -> draw(
+@compat function Base.show{T <: ComposeNode}(io::IO, m::MIME"text/html", ctx::Signal{T})
+    Base.show(io, m, map(c -> draw(
         Patchable(
             Compose.default_graphic_width,
             Compose.default_graphic_height
