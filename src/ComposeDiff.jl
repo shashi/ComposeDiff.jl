@@ -450,7 +450,7 @@ function pango_to_elems(text::AbstractString)
     for mat in eachmatch(pat, text)
         txt = input[lastpos:mat.offset-1]
         if length(txt) > 0
-            output[end] <<= Patchwork.Text(txt)
+            output[end] <<= Patchwork.TextNode(txt)
         end
 
         closing_tag = mat.captures[1] == "/"
@@ -516,7 +516,7 @@ function pango_to_elems(text::AbstractString)
     end
     txt = input[lastpos:end]
     if length(txt) > 0
-        output[end] <<= Patchwork.Text(string(txt))
+        output[end] <<= Patchwork.TextNode(string(txt))
     end
     if open_tag
         el = pop!(output)
